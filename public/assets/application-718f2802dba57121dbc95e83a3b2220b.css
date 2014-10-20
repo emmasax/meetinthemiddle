@@ -1,0 +1,222 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+
+
+ */
+
+/* standard select styling */
+/* line 3, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/selects.css.sass */
+select {
+  background: white url("http://punkchip.com/images/select-arrows.png") no-repeat 100% 50%;
+  border: 1px solid #cccccc;
+  border-radius: 0;
+  padding: 0.6em 2em 0.6em 0.5em;
+  -webkit-appearance: button;
+}
+
+/* remove arrows from Firefox */
+@-moz-document url-prefix() {
+  /* line 12, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/selects.css.sass */
+  .select-wrap {
+    border: 1px solid #cccccc;
+    border-radius: 0;
+    display: inline-block;
+    position: relative;
+  }
+  /* line 17, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/selects.css.sass */
+  .select-wrap:before {
+    content: " ";
+    background: transparent url("http://punkchip.com/images/select-arrows.png") no-repeat 50% 50%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 20px;
+    height: 15px;
+    margin-top: -8px;
+    display: inline-block;
+    pointer-events: none;
+  }
+
+  /* line 29, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/selects.css.sass */
+  select {
+    -moz-appearance: treeitem;
+  }
+}
+
+/* remove arrows from IE10 */
+/* line 33, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/selects.css.sass */
+select::-ms-expand {
+  display: none;
+}
+/* line 1, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+body, input, button, select {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+/* line 6, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+html, body, #map-canvas {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* line 11, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+ul, ol, li, p, h1, h2, h3, input {
+  margin: 0;
+  padding: 0;
+}
+
+/* line 15, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+h1 {
+  font-size: 1.9em;
+  margin-bottom: 0.5em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* line 21, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+input {
+  border: 1px solid #cccccc;
+  line-height: 1.5;
+  padding: 0.5em;
+}
+
+/* line 26, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.right {
+  float: right;
+}
+
+/* line 29, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+li {
+  list-style-type: none;
+}
+
+/* line 32, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+label {
+  display: block;
+}
+
+/* line 35, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.btn {
+  background-color: #64c656;
+  border: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  color: white;
+  padding: 0.7em 1.5em;
+  margin: 0.25em;
+}
+/* line 43, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.btn:hover {
+  background-color: #53c043;
+}
+/* line 45, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.btn.btn-small {
+  font-size: 12px;
+  background-color: #419b34;
+}
+
+/* line 49, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+p, li {
+  line-height: 1.5;
+}
+
+/* line 52, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+a {
+  color: #59abe3;
+  text-decoration: underline;
+}
+
+/* line 56, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations {
+  background-color: rgba(255, 255, 255, 0.9);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 640px;
+  overflow: hidden;
+  padding: 1.25em;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: 450ms all ease-in;
+}
+/* line 68, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations li {
+  float: left;
+  width: 100%;
+}
+/* line 71, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations li.place {
+  width: 50%;
+}
+/* line 73, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations li.place input {
+  width: 90%;
+}
+/* line 75, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations li.go {
+  text-align: right;
+}
+/* line 77, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations li:last-child {
+  padding-right: 0;
+}
+/* line 79, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations .btn {
+  margin-top: 1.1em;
+}
+/* line 81, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations .share {
+  opacity: 0;
+  transition: 450ms opacity ease-in;
+  position: absolute;
+  left: 1.25em;
+  bottom: 1.25em;
+}
+/* line 87, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations.showing-directions {
+  top: 0;
+  transform: translate(-50%, 0);
+  width: 100%;
+  padding: 0.25em 0 0.5em;
+}
+/* line 92, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations.showing-directions label {
+  font-size: 12px;
+}
+/* line 94, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations.showing-directions li {
+  width: auto !important;
+  padding-left: 1em;
+}
+/* line 97, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.locations.showing-directions h1 {
+  display: none;
+}
+
+/* line 102, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.advanced {
+  margin-top: 1em;
+  display: inline-block;
+  width: 100%;
+}
+/* line 106, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.advanced label {
+  position: absolute;
+  left: -999em;
+}
+/* line 109, /Users/emmapatricios/projects/meetinthemiddle/app/assets/stylesheets/style.css.sass */
+.advanced .select-wrap {
+  display: inline-block;
+}
