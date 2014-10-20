@@ -26,17 +26,17 @@ $(function() {
     });
 
     // check if come from share link
-    if(window.location.hash != null) {
-      formSetup = window.location.hash;
-      formSetupArray = formSetup.split('&');
-      place1 = formSetupArray[0].split('=')[1];
-      $('#place1').val(place1);
-      place2 = formSetupArray[1].split('=')[1];
-      $('#place2').val(place2);
-      mode = formSetupArray[2].split('=')[1];
-      type = formSetupArray[3].split('=')[1];
-      $('.locations').addClass('showing-directions');
-    }
+    // if(window.location.hash != null) {
+    //   formSetup = window.location.hash;
+    //   formSetupArray = formSetup.split('&');
+    //   place1 = formSetupArray[0].split('=')[1];
+    //   $('#place1').val(place1);
+    //   place2 = formSetupArray[1].split('=')[1];
+    //   $('#place2').val(place2);
+    //   mode = formSetupArray[2].split('=')[1];
+    //   type = formSetupArray[3].split('=')[1];
+    //   $('.locations').addClass('showing-directions');
+    // }
   },
 
   showMap = function() {
@@ -96,7 +96,7 @@ $(function() {
           if (i == 0) {
             startLocation.latlng = legs[i].start_location;
             startLocation.address = legs[i].start_address;
-            marker = createCustomMarker(legs[i].start_location, "<b>The middle is:</b><br/>" + legs[i].start_address, "");
+            // marker = createCustomMarker(legs[i].start_location, "<b>The middle is:</b><br/>" + legs[i].start_address, "");
           }
           endLocation.latlng = legs[i].end_location;
           endLocation.address = legs[i].end_address;
@@ -131,11 +131,11 @@ $(function() {
     var distance = (percentage/100) * totalDist;
     var time = ((percentage/100) * totalTime/60).toFixed(2);
     if (!marker) {
-      marker = createCustomMarker(polyline.GetPointAtDistance(distance), "time: " + time, "marker");
+      marker = createCustomMarker(polyline.GetPointAtDistance(distance), "", "");
     }
     else {
       marker.setPosition(polyline.GetPointAtDistance(distance));
-      marker.setTitle("time:"+time);
+      marker.setTitle("The Middle");
     }
     searchForMeetingPlace(marker);
   },
@@ -149,10 +149,10 @@ $(function() {
       icon: "http://maps.google.com/mapfiles/marker_orange.png"
     });
     marker.myname = label;
-    google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(label + ' ' + html);
-      infowindow.open(map, marker);
-    });
+    // google.maps.event.addListener(marker, 'click', function() {
+    //   infowindow.setContent(label + ' ' + html);
+    //   infowindow.open(map, marker);
+    // });
     return marker;
   }
 
