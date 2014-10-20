@@ -78,9 +78,17 @@ a
       padding-right: 0
   .btn
     margin-top: 1.1em
+  .share
+    opacity: 0
+    transition: 450ms opacity ease-in
   &.showing-directions
     top: 2em
     transform: translate(-50%, 0)
+    .share
+      opacity: 1
+      position: absolute
+      left: 1.25em
+      bottom: 1.25em
 
 .advanced
   margin-top: 1em

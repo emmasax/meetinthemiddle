@@ -24,6 +24,19 @@ $(function() {
     $('.edit').on('click', function() {
       $('.locations').addClass('open');
     });
+
+    // check if come from share link
+    if(window.location.hash != null) {
+      formSetup = window.location.hash;
+      formSetupArray = formSetup.split('&');
+      place1 = formSetupArray[0].split('=')[1];
+      $('#place1').val(place1);
+      place2 = formSetupArray[1].split('=')[1];
+      $('#place2').val(place2);
+      mode = formSetupArray[2].split('=')[1];
+      type = formSetupArray[3].split('=')[1];
+      $('.locations').addClass('showing-directions');
+    }
   },
 
   showMap = function() {
