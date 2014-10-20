@@ -1,0 +1,93 @@
+body, input, button, select
+  font-family: Helvetica, Arial, sans-serif
+  font-size: 16px
+  color: #2C3E50
+
+html, body, #map-canvas
+  height: 100%
+  margin: 0px
+  padding: 0px
+
+ul, ol, li, p, h1, h2, h3, input
+  margin: 0
+  padding: 0
+
+h1
+  font-size: 1.9em
+  margin-bottom: 0.5em
+  text-transform: uppercase
+  text-align: center
+
+input
+  border: 1px solid #ccc
+  line-height: 1.5
+  padding: 0.5em
+
+.right
+  float: right
+
+li
+  list-style-type: none
+
+label
+  display: block
+
+.btn
+  background-color: darken(#87D37C, 10%)
+  border: 0
+  cursor: pointer
+  -webkit-appearance: none
+  color: #fff
+  padding: 0.7em 1.5em
+  margin: 0.25em
+  &:hover
+    background-color: darken(#87D37C, 15%)
+  &.btn-small
+    font-size: 12px
+    background-color: darken(#87D37C, 25%)
+
+p, li
+  line-height: 1.5
+
+a
+  color: #59ABE3
+  text-decoration: underline
+
+.locations
+  background-color: rgba(#fff, 0.9)
+  position: absolute
+  top: 50%
+  left: 50%
+  min-width: 640px
+  overflow: hidden
+  padding: 1.25em
+  -webkit-transform: translate(-50%, -50%)
+  -moz-transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%)
+  transition: 450ms all ease-in
+  li
+    float: left
+    width: 100%
+    &.place
+      width: 50%
+      input
+        width: 90%
+    &.go
+      text-align: right
+    &:last-child
+      padding-right: 0
+  .btn
+    margin-top: 1.1em
+  &.showing-directions
+    top: 2em
+    transform: translate(-50%, 0)
+
+.advanced
+  margin-top: 1em
+  display: inline-block
+  width: 100%
+  label
+    position: absolute
+    left: -999em
+  .select-wrap
+    display: inline-block
