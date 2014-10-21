@@ -1,5 +1,5 @@
 $(function() {
-  var TEST_MODE = true;
+  var TEST_MODE = false;
 
   var directionsDisplay,
       directionsService = new google.maps.DirectionsService(),
