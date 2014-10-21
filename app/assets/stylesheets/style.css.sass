@@ -20,7 +20,7 @@ ul, ol, li, p, h1, h2, h3, input
   padding: 0
 
 h1
-  font-size: 1.5em
+  font-size: 1.3em
   margin-bottom: 0.5em
   text-transform: uppercase
   text-align: center
@@ -44,6 +44,12 @@ li
 
 label
   display: block
+
+.non-mobile
+  display: none
+
+.non-mobile, .mobile
+  font-style: normal
 
 .btn
   background-color: #87D37C
@@ -78,7 +84,7 @@ a
   -moz-transform: translate(-50%, -50%)
   transform: translate(-50%, -50%)
   z-index: 1
-  width: 70%
+  width: 80%
   li
     padding-bottom: 0.5em
     width: 100%
@@ -143,10 +149,18 @@ a
     font-weight: 600
     padding-top: 0
     padding-bottom: 0
-  a, .logo
     display: none
+  a
+    position: absolute
+    top: 0
+    right: 0.25em
 
 @media all and (min-width: 500px)
+  .non-mobile
+    display: inline
+  .mobile
+    display: none
+
   .searched #map-canvas
     height: 90%
     top: 3em
@@ -181,6 +195,7 @@ a
     &.showing-directions
       bottom: 0
       top: auto
+      display: block
       background-color: $navBar
       font-size: 14px
       transform: translate(-50%, 0)
@@ -217,8 +232,9 @@ a
   .info-bar
     .logo
       float: right
-    a, .logo
       display: inline-block
+    a
+      position: static
 
   .places-list
     background-color: rgba(#26A65B, 0.8)

@@ -210,7 +210,7 @@ $(function() {
         var place = results[i];
         createMarker(results[i], i);
       }
-      $('body').append(placesList).append('<div class="info-bar"><span>Found ' + $('.places-list li').length + ' places to meet.</span> <a href="#" class="show-places">Show places in a list</a><span class="logo">Let\'s meet in the middle</span></div>');
+      $('body').append(placesList).append('<div class="info-bar"><span>Found ' + $('.places-list li').length + ' places to meet.</span> <a href="#" class="show-places">Show <i class="non-mobile">places in a list</i><i class="mobile">on a map</i></a><span class="logo">Let\'s meet in the middle</span></div>');
 
       $('.places-list li').on('click', function() {
         var ref = $(this).data('marker-id');
@@ -219,11 +219,11 @@ $(function() {
 
       $('.show-places').on('click', function() {
         $('.places-list').toggleClass('open');
-        if($(this).text() == "Show places in a list") {
-          $(this).text("Hide list of places");
+        if($(this).text() == "Show places in a liston a map") {
+          $(this).html("Hide list of places");
         }
         else {
-          $(this).text("Show places in a list");
+          $(this).html('Show <i class="non-mobile">places in a list</i><i class="mobile">on a map</i>');
         }
       });
 
