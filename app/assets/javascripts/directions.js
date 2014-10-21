@@ -220,10 +220,20 @@ $(function() {
       $('.show-places').on('click', function() {
         $('.places-list').toggleClass('open');
         if($(this).text() == "Show places in a liston a map") {
-          $(this).html("Hide list of places");
+          $(this).html('<i class="non-mobile">Hide list of places</i><i class="mobile">Show as a list</i>');
+          if($(window).innerWidth() < 500) {
+            $('.places-list').hide();
+            $('#map-canvas').show();
+            map.setZoom(15);
+            map.setCenter(markersList[0].getPosition());
+          }
         }
         else {
           $(this).html('Show <i class="non-mobile">places in a list</i><i class="mobile">on a map</i>');
+          if($(window).innerWidth() < 500) {
+            $('.places-list').show();
+            $('#map-canvas').hide();
+          }
         }
       });
 
@@ -243,7 +253,7 @@ $(function() {
     });
 
     // write to list
-    console.log(place)
+    // console.log(place)
     placesList.append('<li data-marker-id="' + index + '">' + (index+1) + '. ' + place.name + '<span>' + place.vicinity + '</span></li>');
     markersList[index] = marker;
 
