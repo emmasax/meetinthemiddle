@@ -21,7 +21,6 @@ $(function() {
   initialize = function() {
     showMap();
     autocompletePlaces();
-    getDirections();
     otherSetup();
   },
 
@@ -29,6 +28,12 @@ $(function() {
     $('.edit').on('click', function() {
       $('.locations').addClass('open');
     });
+
+    $('form').on("submit", function(ev) {
+      ev.preventDefault();
+      getDirections();
+    });
+    $(".locations .btn").on("click", getDirections);
 
     // check if come from share link
     // if(window.location.hash != null) {
@@ -49,8 +54,6 @@ $(function() {
     var mapOptions = {
       zoom: currentZoom,
       center: mapCentre
-      // scrollwheel: false,
-      // disableDefaultUI: true
     };
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     polyline = new google.maps.Polyline({
@@ -72,22 +75,20 @@ $(function() {
   },
 
   getDirections = function() {
-    $(".locations .btn").on("click", function() {
-      $('.error').removeClass('error');
-      if(!TEST_MODE && ($(input1).val() == '' || $(input2).val() == '')) {
-        if($(input1).val() == '') {
-          $(input1).addClass('error');
-        }
-        if($(input2).val() == '') {
-          $(input2).addClass('error');
-        }
+    $('.error').removeClass('error');
+    if(!TEST_MODE && ($(input1).val() == '' || $(input2).val() == '')) {
+      if($(input1).val() == '') {
+        $(input1).addClass('error');
       }
-      else {
-        directionsDisplay = new google.maps.DirectionsRenderer();
-        directionsDisplay.setMap(map);
-        calcRoute();
+      if($(input2).val() == '') {
+        $(input2).addClass('error');
       }
-    });
+    }
+    else {
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+      calcRoute();
+    }
   },
 
   calcRoute = function() {
