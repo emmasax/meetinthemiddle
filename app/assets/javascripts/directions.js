@@ -1,5 +1,5 @@
 $(function() {
-  var TEST_MODE = false;
+  var TEST_MODE = true;
 
   var directionsDisplay,
       directionsService = new google.maps.DirectionsService(),
@@ -73,11 +73,11 @@ $(function() {
   getDirections = function() {
     $(".locations .btn").on("click", function() {
       $('.error').removeClass('error');
-      if(typeof $(input1).data("lat-long") === 'undefined' || typeof $(input2).data("lat-long") === 'undefined') {
-        if(typeof $(input1).data("lat-long") === 'undefined') {
+      if(!TEST_MODE && ($(input1).val() == '' || $(input2).val() == '')) {
+        if($(input1).val() == '') {
           $(input1).addClass('error');
         }
-        if(typeof $(input2).data("lat-long") === 'undefined') {
+        if($(input2).val() == '') {
           $(input2).addClass('error');
         }
       }
@@ -97,8 +97,18 @@ $(function() {
       destination = "51.5263219 -0.08429820000003474";
     }
     else {
-      origin = $(input1).data("lat-long");
-      destination = $(input2).data("lat-long");
+      if(typeof $(input1).data("lat-long") === 'undefined') {
+        origin = $(input1).val();
+      }
+      else {
+        origin = $(input1).data("lat-long");
+      }
+      if(typeof $(input2).data("lat-long") === 'undefined') {
+        destination = $(input2).val();
+      }
+      else {
+        destination = $(input2).data("lat-long");
+      }
     }
 
     var request = {
@@ -220,7 +230,9 @@ $(function() {
     }
     else {
       console.log(status)
+      $('body').append('<div class="info-bar"><span>Sorry, no places found to meet</span><span class="logo">Let\'s meet in the middle</span></div>');
     }
+    $('body').addClass('searched');
   },
 
   createMarker = function(place, index) {
@@ -230,15 +242,19 @@ $(function() {
       position: place.geometry.location
     });
 
-    console.log(place);
     // write to list
-    placesList.append('<li data-marker-id="' + index + '">' + (index+1) + '. ' + place.name + '</li>');
+    console.log(place)
+    placesList.append('<li data-marker-id="' + index + '">' + (index+1) + '. ' + place.name + '<span>' + place.vicinity + '</span></li>');
     markersList[index] = marker;
-
 
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(place.name);
       infowindow.open(map, this);
+      var zoomWas = map.getZoom();
+      map.setZoom(16);
+      if(zoomWas != 16) {
+        map.setCenter(marker.getPosition());
+      }
     });
   };
 

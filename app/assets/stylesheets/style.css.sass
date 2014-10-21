@@ -4,7 +4,7 @@ $buttonColor: #1E8BC3
 
 body, input, button, select
   font-family: Helvetica, Arial, sans-serif
-  font-size: 16px
+  font-size: 14px
   color: $textColor
 
 html, body, #map-canvas
@@ -12,23 +12,27 @@ html, body, #map-canvas
   margin: 0px
   padding: 0px
 
+.searched #map-canvas
+  display: none
+
 ul, ol, li, p, h1, h2, h3, input
   margin: 0
   padding: 0
 
 h1
-  font-size: 1.9em
+  font-size: 1.5em
   margin-bottom: 0.5em
   text-transform: uppercase
   text-align: center
 
 input
-  // border: 1px solid #ccc
   border: 0
+  border-radius: 0
   line-height: 1.5
   padding: 0.5em
   &.error
     outline: 2px solid #F2784B
+
 input, select
   vertical-align: middle
 
@@ -68,27 +72,21 @@ a
   position: absolute
   top: 50%
   left: 50%
-  min-width: 640px
   overflow: hidden
   padding: 1.25em
   -webkit-transform: translate(-50%, -50%)
   -moz-transform: translate(-50%, -50%)
   transform: translate(-50%, -50%)
-  // transition: 450ms all ease-in
   z-index: 1
+  width: 70%
   li
-    float: left
+    padding-bottom: 0.5em
     width: 100%
-    &.place
-      width: 50%
-      input
-        width: 90%
-    &.go
-      text-align: right
-    &:last-child
-      padding-right: 0
-  .btn
-    margin-top: 1.1em
+    input
+      width: 90%
+  .select-wrap
+    display: block
+    padding-bottom: 0.5em
   .share
     opacity: 0
     transition: 450ms opacity ease-in
@@ -96,40 +94,9 @@ a
     left: 1.25em
     bottom: 1.25em
   &.showing-directions
-    bottom: 0
-    top: auto
-    background-color: $navBar
-    font-size: 14px
-    transform: translate(-50%, 0)
-    width: 100%
-    padding: 1em 0 0.9em
-    text-align: center
-    .place input
-      width: 60%
-    ul, li
-      display: inline-block
-    input, button, select, label
-      font-size: 14px
-    .advanced
-      margin-top: 0
-    label
-      display: inline-block
-    li
-      width: auto !important
-      padding-left: 0.75em
-    h1
-      display: none
-    input
-      padding: 0.5em
-    select
-      padding-top: 0.65em
-      padding-bottom: 0.7em
-    .btn
-      padding: 0.6em 0.75em 0.75em 0.75em
-      margin: 0
+    display: none
 
 .advanced
-  margin-top: 1em
   display: inline-block
   width: 100%
   label
@@ -137,19 +104,20 @@ a
     left: -999em
 
 .places-list
-  position: absolute
-  height: 100%
-  top: 0
-  left: -28%
-  width: 28%
-  background-color: rgba(#26A65B, 0.8)
+  background-color: #26A65B
   color: #fff
-  overflow-y: scroll
-  transition: 250ms left ease-in
+  position: absolute
+  left: 0
+  top: 0
+  width: 100%
   li
     cursor: pointer
     padding: 0.5em 1em
     border-bottom: 1px solid darken(#26A65B, 5%)
+    span
+      font-size: 12px
+      display: block
+
     &:hover
       background-color: darken(#26A65B, 5%)
     &:first-child
@@ -157,26 +125,108 @@ a
     &:last-child
       padding-bottom: 4.75em
 
-  &.open
-    left: 0
-
 .info-bar
   background-color: $navBar
   position: absolute
   left: 0
   top: 0
   width: 100%
-  color: #fff
-  span
-    padding: 0 1em
-    vertical-align: middle
-  a
-    display: inline-block
+  span, a
     padding: 1em
+    vertical-align: middle
+    display: inline-block
     color: #fff
   .logo
     font-size: 1.5em
     margin-top: 0.4em
     text-transform: uppercase
     font-weight: 600
-    float: right
+    padding-top: 0
+    padding-bottom: 0
+  a, .logo
+    display: none
+
+@media all and (min-width: 500px)
+  .searched #map-canvas
+    height: 90%
+    top: 3em
+    bottom: 3em
+    display: block
+
+  body, input, button, select
+    font-size: 16px
+
+  h1
+    font-size: 1.9em
+
+  .locations
+    min-width: 640px
+    width: auto
+    .btn
+      margin-top: 1.1em
+    .select-wrap
+      display: inline-block
+      padding-bottom: 0
+    li
+      float: left
+      padding-bottom: 0
+      &.place
+        width: 50%
+        input
+          width: 90%
+      &.go
+        text-align: right
+      &:last-child
+        padding-right: 0
+    &.showing-directions
+      bottom: 0
+      top: auto
+      background-color: $navBar
+      font-size: 14px
+      transform: translate(-50%, 0)
+      width: 100%
+      padding: 1em 0 0.9em
+      text-align: center
+      .place input
+        width: 60%
+      ul, li
+        display: inline-block
+      input, button, select, label
+        font-size: 14px
+      .advanced
+        margin-top: 0
+      label
+        display: inline-block
+      li
+        width: auto !important
+        padding-left: 0.75em
+      h1
+        display: none
+      input
+        padding: 0.5em
+      select
+        padding-top: 0.65em
+        padding-bottom: 0.7em
+      .btn
+        padding: 0.6em 0.75em 0.75em 0.75em
+        margin: 0
+
+  .advanced
+    margin-top: 1em
+
+  .info-bar
+    .logo
+      float: right
+    a, .logo
+      display: inline-block
+
+  .places-list
+    background-color: rgba(#26A65B, 0.8)
+    height: 100%
+    top: 0
+    left: -28%
+    width: 28%
+    overflow-y: scroll
+    transition: 250ms left ease-in
+    &.open
+      left: 0
