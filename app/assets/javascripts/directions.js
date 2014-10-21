@@ -1,4 +1,6 @@
 $(function() {
+  var TEST_MODE = false;
+
   var directionsDisplay,
       directionsService = new google.maps.DirectionsService(),
       map,
@@ -12,6 +14,8 @@ $(function() {
       totalTime = 0,
       currentZoom = 10,
       listener,
+      placesList = $('<ul class="places-list"></ul>'),
+      markersList = [],
 
   initialize = function() {
     showMap();
@@ -43,9 +47,9 @@ $(function() {
     var mapCentre = new google.maps.LatLng(51.5072, 0.1275);
     var mapOptions = {
       zoom: currentZoom,
-      center: mapCentre,
-      scrollwheel: false,
-      disableDefaultUI: true
+      center: mapCentre
+      // scrollwheel: false,
+      // disableDefaultUI: true
     };
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
     polyline = new google.maps.Polyline({
@@ -68,17 +72,38 @@ $(function() {
 
   getDirections = function() {
     $(".locations .btn").on("click", function() {
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(map);
-      calcRoute();
+      $('.error').removeClass('error');
+      if(typeof $(input1).data("lat-long") === 'undefined' || typeof $(input2).data("lat-long") === 'undefined') {
+        if(typeof $(input1).data("lat-long") === 'undefined') {
+          $(input1).addClass('error');
+        }
+        if(typeof $(input2).data("lat-long") === 'undefined') {
+          $(input2).addClass('error');
+        }
+      }
+      else {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay.setMap(map);
+        calcRoute();
+      }
     });
   },
 
   calcRoute = function() {
     var selectedMode = document.getElementById('travelMode').value;
+
+    if(TEST_MODE) {
+      origin = "51.5154985 -0.17588420000004135";
+      destination = "51.5263219 -0.08429820000003474";
+    }
+    else {
+      origin = $(input1).data("lat-long");
+      destination = $(input2).data("lat-long");
+    }
+
     var request = {
-      origin: $(input1).data("lat-long"),
-      destination: $(input2).data("lat-long"),
+      origin: origin,
+      destination: destination,
       travelMode: google.maps.TravelMode[selectedMode]
     };
     directionsService.route(request, function(result, status) {
@@ -173,20 +198,43 @@ $(function() {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
-        createMarker(results[i]);
+        createMarker(results[i], i);
       }
+      $('body').append(placesList).append('<div class="info-bar"><span>Found ' + $('.places-list li').length + ' places to meet.</span> <a href="#" class="show-places">Show places in a list</a><span class="logo">Let\'s meet in the middle</span></div>');
+
+      $('.places-list li').on('click', function() {
+        var ref = $(this).data('marker-id');
+        google.maps.event.trigger(markersList[ref], 'click')
+      });
+
+      $('.show-places').on('click', function() {
+        $('.places-list').toggleClass('open');
+        if($(this).text() == "Show places in a list") {
+          $(this).text("Hide list of places");
+        }
+        else {
+          $(this).text("Show places in a list");
+        }
+      });
+
     }
     else {
       console.log(status)
     }
   },
 
-  createMarker = function(place) {
+  createMarker = function(place, index) {
     var placeLoc = place.geometry.location;
     var marker = new google.maps.Marker({
       map: map,
       position: place.geometry.location
     });
+
+    console.log(place);
+    // write to list
+    placesList.append('<li data-marker-id="' + index + '">' + (index+1) + '. ' + place.name + '</li>');
+    markersList[index] = marker;
+
 
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(place.name);

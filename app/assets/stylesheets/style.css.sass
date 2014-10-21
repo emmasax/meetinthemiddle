@@ -1,7 +1,11 @@
+$navBar: #2C3E50
+$textColor: $navBar
+$buttonColor: #1E8BC3
+
 body, input, button, select
   font-family: Helvetica, Arial, sans-serif
   font-size: 16px
-  color: #2C3E50
+  color: $textColor
 
 html, body, #map-canvas
   height: 100%
@@ -19,9 +23,14 @@ h1
   text-align: center
 
 input
-  border: 1px solid #ccc
+  // border: 1px solid #ccc
+  border: 0
   line-height: 1.5
   padding: 0.5em
+  &.error
+    outline: 2px solid #F2784B
+input, select
+  vertical-align: middle
 
 .right
   float: right
@@ -33,7 +42,7 @@ label
   display: block
 
 .btn
-  background-color: darken(#87D37C, 10%)
+  background-color: #87D37C
   border: 0
   cursor: pointer
   -webkit-appearance: none
@@ -54,7 +63,8 @@ a
   text-decoration: underline
 
 .locations
-  background-color: rgba(#fff, 0.9)
+  background-color: rgba($navBar, 0.8)
+  color: #fff
   position: absolute
   top: 50%
   left: 50%
@@ -64,7 +74,8 @@ a
   -webkit-transform: translate(-50%, -50%)
   -moz-transform: translate(-50%, -50%)
   transform: translate(-50%, -50%)
-  transition: 450ms all ease-in
+  // transition: 450ms all ease-in
+  z-index: 1
   li
     float: left
     width: 100%
@@ -85,19 +96,37 @@ a
     left: 1.25em
     bottom: 1.25em
   &.showing-directions
-    top: 0
+    bottom: 0
+    top: auto
+    background-color: $navBar
+    font-size: 14px
     transform: translate(-50%, 0)
     width: 100%
-    padding: 0.25em 0 0.5em
+    padding: 1em 0 0.9em
+    text-align: center
+    .place input
+      width: 60%
+    ul, li
+      display: inline-block
+    input, button, select, label
+      font-size: 14px
+    .advanced
+      margin-top: 0
     label
-      font-size: 12px
+      display: inline-block
     li
       width: auto !important
-      padding-left: 1em
+      padding-left: 0.75em
     h1
       display: none
-    // .share
-    //   opacity: 1
+    input
+      padding: 0.5em
+    select
+      padding-top: 0.65em
+      padding-bottom: 0.7em
+    .btn
+      padding: 0.6em 0.75em 0.75em 0.75em
+      margin: 0
 
 .advanced
   margin-top: 1em
@@ -106,5 +135,48 @@ a
   label
     position: absolute
     left: -999em
-  .select-wrap
+
+.places-list
+  position: absolute
+  height: 100%
+  top: 0
+  left: -28%
+  width: 28%
+  background-color: rgba(#26A65B, 0.8)
+  color: #fff
+  overflow-y: scroll
+  transition: 250ms left ease-in
+  li
+    cursor: pointer
+    padding: 0.5em 1em
+    border-bottom: 1px solid darken(#26A65B, 5%)
+    &:hover
+      background-color: darken(#26A65B, 5%)
+    &:first-child
+      padding-top: 3.75em
+    &:last-child
+      padding-bottom: 4.75em
+
+  &.open
+    left: 0
+
+.info-bar
+  background-color: $navBar
+  position: absolute
+  left: 0
+  top: 0
+  width: 100%
+  color: #fff
+  span
+    padding: 0 1em
+    vertical-align: middle
+  a
     display: inline-block
+    padding: 1em
+    color: #fff
+  .logo
+    font-size: 1.5em
+    margin-top: 0.4em
+    text-transform: uppercase
+    font-weight: 600
+    float: right

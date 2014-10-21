@@ -1,17 +1,19 @@
 /* standard select styling */
+.select-wrap
+  display: inline-block
 select
   background: #fff url("http://punkchip.com/images/select-arrows.png") no-repeat 100% 50%
-  border: 1px solid #ccc
+  // border: 1px solid #ccc
+  border: 0
   border-radius: 0
-  padding: 0.6em 2em 0.6em 0.5em
+  padding: 0.7em 2em 0.65em 0.5em
   -webkit-appearance: button
 
 /* remove arrows from Firefox */
 @-moz-document url-prefix()
   .select-wrap
-    border: 1px solid #ccc
+    // border: 1px solid #ccc
     border-radius: 0
-    display: inline-block
     position: relative
     &:before
       content: " "
