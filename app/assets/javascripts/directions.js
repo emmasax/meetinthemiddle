@@ -68,13 +68,36 @@ $(function() {
     },
     error = function(msg) {
       // console.log(arguments);
+      var mapOptions = {
+        zoom: currentZoom,
+        center: mapCentre
+      };
+      map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+      polyline = new google.maps.Polyline({
+        path: [],
+        strokeColor: '#FF0000',
+        strokeWeight: 3
+      });
+      otherSetup();
     };
 
     if(navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
     }
     else {
-      error('not supported');
+      // error('not supported');
+      var mapOptions = {
+        zoom: currentZoom,
+        center: mapCentre
+      };
+      map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+      polyline = new google.maps.Polyline({
+        path: [],
+        strokeColor: '#FF0000',
+        strokeWeight: 3
+      });
+      otherSetup();
+
     }
   },
 
