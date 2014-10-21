@@ -1,6 +1,6 @@
 $(function() {
-  // var TEST_MODE = true;
-  var TEST_MODE = false;
+  var TEST_MODE = true;
+  // var TEST_MODE = false;
 
   var directionsDisplay,
       directionsService = new google.maps.DirectionsService(),
@@ -20,8 +20,6 @@ $(function() {
 
   initialize = function() {
     showMap();
-    autocompletePlaces();
-    otherSetup();
   },
 
   otherSetup = function() {
@@ -33,7 +31,9 @@ $(function() {
       ev.preventDefault();
       getDirections();
     });
-    $(".locations .btn").on("click", getDirections);
+    // $(".locations .btn").on("click", getDirections);
+
+    autocompletePlaces();
 
     // check if come from share link
     // if(window.location.hash != null) {
@@ -51,16 +51,31 @@ $(function() {
 
   showMap = function() {
     var mapCentre = new google.maps.LatLng(51.5072, 0.1275);
-    var mapOptions = {
-      zoom: currentZoom,
-      center: mapCentre
+
+    var success = function(position) {
+      mapCentre = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+      var mapOptions = {
+        zoom: currentZoom,
+        center: mapCentre
+      };
+      map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+      polyline = new google.maps.Polyline({
+        path: [],
+        strokeColor: '#FF0000',
+        strokeWeight: 3
+      });
+      otherSetup();
+    },
+    error = function(msg) {
+      // console.log(arguments);
     };
-    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-    polyline = new google.maps.Polyline({
-      path: [],
-      strokeColor: '#FF0000',
-      strokeWeight: 3
-    });
+
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success, error);
+    }
+    else {
+      error('not supported');
+    }
   },
 
   autocompletePlaces = function() {
@@ -119,10 +134,12 @@ $(function() {
       travelMode: google.maps.TravelMode[selectedMode]
     };
     directionsService.route(request, function(result, status) {
+
+      $(".locations").addClass("showing-directions");
+
       if (status == google.maps.DirectionsStatus.OK) {
         polyline.setPath([]);
         directionsDisplay.setDirections(result);
-        $(".locations").addClass("showing-directions");
 
         startLocation = new Object();
         endLocation = new Object();
@@ -148,6 +165,10 @@ $(function() {
         }
         polyline.setMap(map);
         computeTotalDistance(result);
+      }
+      else {
+        // console.log(status);
+        $('body').append('<div class="info-bar"><span>Sorry, no routes were found</span><button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
       }
     });
   },
@@ -186,20 +207,14 @@ $(function() {
       icon: "http://maps.google.com/mapfiles/marker_orange.png"
     });
     marker.myname = label;
-    // google.maps.event.addListener(marker, 'click', function() {
-    //   infowindow.setContent(label + ' ' + html);
-    //   infowindow.open(map, marker);
-    // });
     return marker;
   }
 
   searchForMeetingPlace = function(midPoint) {
-    var placeType = document.getElementById('placeType').value;
-
     var request = {
       location: midPoint.getPosition(),
-      radius: '500',
-      keyword: placeType
+      radius: '1000',
+      keyword: "coffee restaurant bar"
     };
 
     service = new google.maps.places.PlacesService(map);
@@ -241,7 +256,7 @@ $(function() {
 
     }
     else {
-      console.log(status)
+      // console.log(status)
       $('body').append('<div class="info-bar"><span>Sorry, no places found to meet</span><button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
     }
     $('body').addClass('searched');
@@ -258,7 +273,6 @@ $(function() {
     });
 
     // write to list
-    // console.log(place)
     placesList.append('<li data-marker-id="' + index + '">' + (index+1) + '. ' + place.name + '<span>' + place.vicinity + '</span></li>');
     markersList[index] = marker;
 
@@ -275,12 +289,3 @@ $(function() {
   google.maps.event.addDomListener(window, "load", initialize);
 
 });
-
-
-
-
-
-
-
-
-
