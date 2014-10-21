@@ -1,4 +1,5 @@
 $(function() {
+  // var TEST_MODE = true;
   var TEST_MODE = false;
 
   var directionsDisplay,
@@ -210,7 +211,7 @@ $(function() {
         var place = results[i];
         createMarker(results[i], i);
       }
-      $('body').append(placesList).append('<div class="info-bar"><span>Found ' + $('.places-list li').length + ' places to meet.</span> <a href="#" class="show-places">Show <i class="non-mobile">places in a list</i><i class="mobile">on a map</i></a><span class="logo">Let\'s meet in the middle</span></div>');
+      $('body').append(placesList).append('<div class="info-bar"><a href="#" class="show-places">Show <i class="non-mobile">as a list</i><i class="mobile">on a map</i></a> <button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
 
       $('.places-list li').on('click', function() {
         var ref = $(this).data('marker-id');
@@ -219,17 +220,17 @@ $(function() {
 
       $('.show-places').on('click', function() {
         $('.places-list').toggleClass('open');
-        if($(this).text() == "Show places in a liston a map") {
+        if($(this).text() == "Show as a liston a map") {
           $(this).html('<i class="non-mobile">Hide list of places</i><i class="mobile">Show as a list</i>');
           if($(window).innerWidth() < 500) {
             $('.places-list').hide();
             $('#map-canvas').show();
-            map.setZoom(15);
             map.setCenter(markersList[0].getPosition());
+            map.setZoom(15);
           }
         }
         else {
-          $(this).html('Show <i class="non-mobile">places in a list</i><i class="mobile">on a map</i>');
+          $(this).html('Show <i class="non-mobile">as a list</i><i class="mobile">on a map</i>');
           if($(window).innerWidth() < 500) {
             $('.places-list').show();
             $('#map-canvas').hide();
@@ -240,9 +241,12 @@ $(function() {
     }
     else {
       console.log(status)
-      $('body').append('<div class="info-bar"><span>Sorry, no places found to meet</span><span class="logo">Let\'s meet in the middle</span></div>');
+      $('body').append('<div class="info-bar"><span>Sorry, no places found to meet</span><button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
     }
     $('body').addClass('searched');
+    $('.new-search').on('click', function() {
+      window.location.reload();
+    });
   },
 
   createMarker = function(place, index) {
@@ -260,11 +264,10 @@ $(function() {
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(place.name);
       infowindow.open(map, this);
-      var zoomWas = map.getZoom();
-      map.setZoom(16);
-      if(zoomWas != 16) {
+      if(map.getZoom() != 16) {
         map.setCenter(marker.getPosition());
       }
+      map.setZoom(16);
     });
   };
 

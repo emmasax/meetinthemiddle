@@ -3,15 +3,18 @@
 .locations
   %h1 Let's meet in the middle
   %ul.standard
-    %li.place
+    %li
       %label{for: "place1"} I'm in
       %input#place1{type: "text", name: "place-1", value: "", placeholder: "e.g. Paddington Station or NW1 0DU", required: "required" }
     %li.place
       %label{for: "place2"} They're in
       %input#place2{type: "text", name: "place-2", value: "", placeholder: "e.g. Old Street Station", required: "required" }
 
-    %li.advanced
-      I'm
+    %li.go
+      %button.btn{type: "submit"} Find a meeting place
+
+    %li.no-label
+      .fake-label I'm
       %label{for: "travelMode"} How are you travelling?
       .select-wrap
         %select#travelMode
@@ -20,8 +23,8 @@
           %option{value: "WALKING"} walking
           %option{value: "BICYCLING"} cycling
 
-      and want to meet at a
-
+    %li.no-label
+      .fake-label and want to meet at a
       %label{for: "placeType"} What type of place do you want to meet at?
       .select-wrap
         %select#placeType
@@ -29,8 +32,8 @@
           %option{value: "bar"} pub or bar
           %option{value: "restaurant"} restaurant
 
-    %li.go
-      %button.btn{type: "submit"} Find a meeting place
+  / =link_to "Get link to share", "/#p1=51.5154985 -0.17588420000004135&p2=51.5263219 -0.08429820000003474&mode=TRANSIT&type=best coffee", class: "share"
 
-
-  =link_to "Get link to share", "/#p1=51.5154985 -0.17588420000004135&p2=51.5263219 -0.08429820000003474&mode=TRANSIT&type=best coffee", class: "share"
+.social
+  &copy;2014
+  =link_to "Follow emmasax on Twitter", "http://twitter.com/emmasax"
