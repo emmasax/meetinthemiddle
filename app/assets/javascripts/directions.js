@@ -3,24 +3,33 @@ $(function() {
   var TEST_MODE = false;
 
   var directionsDisplay,
-      directionsService = new google.maps.DirectionsService(),
+      directionsService,
       map,
-      input1 = document.getElementById("place1"),
-      input2 = document.getElementById("place2"),
-      autocompleteFrom = new google.maps.places.Autocomplete(input1),
-      autocompleteTo = new google.maps.places.Autocomplete(input2),
+      input1,
+      input2,
       marker,
-      infowindow = new google.maps.InfoWindow(),
       totalDist = 0,
       totalTime = 0,
       currentZoom = 10,
       listener,
-      placesList = $('.places-list'),
+      placesList,
       markersList = [],
-      mapCentre = new google.maps.LatLng(51.5072, 0.1275),
+      autocompleteFrom,
+      autocompleteTo,
+      infowindow,
+      mapCentre,
       region,
 
   initialize = function() {
+    input1 = document.getElementById("place1"),
+    input2 = document.getElementById("place2"),
+    placesList = $('.places-list'),
+    directionsService = new google.maps.DirectionsService(),
+    autocompleteFrom = new google.maps.places.Autocomplete(input1),
+    autocompleteTo = new google.maps.places.Autocomplete(input2),
+    infowindow = new google.maps.InfoWindow(),
+    mapCentre = new google.maps.LatLng(51.5072, 0.1275);
+
     getUserLocation();
   },
 
@@ -306,6 +315,8 @@ $(function() {
     });
   };
 
-  google.maps.event.addDomListener(window, "load", initialize);
+  if($('body.map').length > 0) {
+    google.maps.event.addDomListener(window, "load", initialize);
+  }
 
 });

@@ -27,6 +27,8 @@ h1
   margin-bottom: 0.5em
   text-transform: uppercase
   text-align: center
+  a
+    text-decoration: none
 
 input
   border: 0
@@ -65,6 +67,7 @@ label
   color: #fff
   padding: 0.7em 1.5em 0.9em
   margin: 0.25em
+  text-decoration: none
   &:hover
     background-color: darken(#87D37C, 25%)
   &.btn-small
@@ -200,6 +203,29 @@ a
     position: absolute
     top: 0
     right: 0.25em
+
+.feature-list
+
+  .info-bar
+    display: block
+    text-align: center
+    position: static
+    .logo
+      float: none
+      display: block
+    .btn
+      position: absolute
+      right: 0.5em
+      top: 0.5em
+
+  .features
+    max-width: 600px
+    margin: 0 auto
+    & > li
+      margin-bottom: 3em
+      li
+        list-style-type: disc
+        margin-left: 1.5em
 
 @media all and (min-width: 500px)
   h1
