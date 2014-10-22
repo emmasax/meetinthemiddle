@@ -19,6 +19,7 @@ $(function() {
       infowindow,
       mapCentre,
       region,
+      smallScreen = (window.innerWidth || document.documentElement.clientWidth) < 500,
 
   initialize = function() {
     input1 = document.getElementById("place1"),
@@ -29,7 +30,6 @@ $(function() {
     autocompleteTo = new google.maps.places.Autocomplete(input2),
     infowindow = new google.maps.InfoWindow(),
     mapCentre = new google.maps.LatLng(51.5072, 0.1275);
-
     getUserLocation();
   },
 
@@ -179,7 +179,6 @@ $(function() {
           if (i == 0) {
             startLocation.latlng = legs[i].start_location;
             startLocation.address = legs[i].start_address;
-            // marker = createCustomMarker(legs[i].start_location, "<b>The middle is:</b><br/>" + legs[i].start_address, "");
           }
           endLocation.latlng = legs[i].end_location;
           endLocation.address = legs[i].end_address;
@@ -222,7 +221,7 @@ $(function() {
     }
     else {
       marker.setPosition(polyline.GetPointAtDistance(distance));
-      marker.setTitle("The Middle");
+      marker.setTitle("The middle");
     }
     searchForMeetingPlace(marker);
   },

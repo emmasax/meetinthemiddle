@@ -1,37 +1,32 @@
 /* standard select styling */
-// .select-wrap
-//   display: inline-block
-
 select
   background: #fff url("http://punkchip.com/images/select-arrows.png") no-repeat 100% 50%
-  // border: 1px solid #ccc
   border: 0
   border-radius: 0
   padding: 0.7em 2em 0.65em 0.5em
-  // -webkit-appearance: button
+  -webkit-appearance: button
   display: block
   width: 100%
 
 /* remove arrows from Firefox */
-// @-moz-document url-prefix()
-//   .select-wrap
-//     // border: 1px solid #ccc
-//     border-radius: 0
-//     position: relative
-//     &:before
-//       content: " "
-//       background: transparent url("http://punkchip.com/images/select-arrows.png") no-repeat 50% 50%
-//       position: absolute
-//       right: 0
-//       top: 50%
-//       width: 20px
-//       height: 15px
-//       margin-top: -8px
-//       display: inline-block
-//       pointer-events: none
-//
-//   select
-//     -moz-appearance: treeitem
+@-moz-document url-prefix()
+  .select-wrap
+    border-radius: 0
+    position: relative
+    &:before
+      content: " "
+      background: transparent url("http://punkchip.com/images/select-arrows.png") no-repeat 50% 50%
+      position: absolute
+      right: 0
+      top: 50%
+      width: 20px
+      height: 15px
+      margin-top: -8px
+      display: inline-block
+      pointer-events: none
+
+  select
+    -moz-appearance: treeitem
 
 /* remove arrows from IE10 */
 select::-ms-expand
