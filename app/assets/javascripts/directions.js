@@ -15,11 +15,13 @@ $(function() {
       totalTime = 0,
       currentZoom = 10,
       listener,
-      placesList = $('<ul class="places-list"></ul>'),
+      placesList = $('.places-list'),
       markersList = [],
+      mapCentre = new google.maps.LatLng(51.5072, 0.1275),
+      region,
 
   initialize = function() {
-    showMap();
+    getUserLocation();
   },
 
   otherSetup = function() {
@@ -31,7 +33,10 @@ $(function() {
       ev.preventDefault();
       getDirections();
     });
-    // $(".locations .btn").on("click", getDirections);
+
+    $('.new-search').on('click', function() {
+      window.location.reload();
+    });
 
     autocompletePlaces();
 
@@ -49,36 +54,28 @@ $(function() {
     // }
   },
 
-  showMap = function() {
-    var mapCentre = new google.maps.LatLng(51.5072, 0.1275);
+  displayMap = function() {
+    var mapOptions = {
+      zoom: currentZoom,
+      center: mapCentre
+    };
+    map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+    polyline = new google.maps.Polyline({
+      path: [],
+      strokeColor: '#FF0000',
+      strokeWeight: 3
+    });
+    otherSetup();
+  },
 
+  getUserLocation = function() {
+    // display the map if there is an error or geolocation not supported - just use default lat lng
     var success = function(position) {
       mapCentre = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-      var mapOptions = {
-        zoom: currentZoom,
-        center: mapCentre
-      };
-      map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-      polyline = new google.maps.Polyline({
-        path: [],
-        strokeColor: '#FF0000',
-        strokeWeight: 3
-      });
-      otherSetup();
+      displayMap();
     },
     error = function(msg) {
-      // console.log(arguments);
-      var mapOptions = {
-        zoom: currentZoom,
-        center: mapCentre
-      };
-      map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-      polyline = new google.maps.Polyline({
-        path: [],
-        strokeColor: '#FF0000',
-        strokeWeight: 3
-      });
-      otherSetup();
+      displayMap();
     };
 
     if(navigator.geolocation) {
@@ -86,24 +83,24 @@ $(function() {
     }
     else {
       // error('not supported');
-      var mapOptions = {
-        zoom: currentZoom,
-        center: mapCentre
-      };
-      map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-      polyline = new google.maps.Polyline({
-        path: [],
-        strokeColor: '#FF0000',
-        strokeWeight: 3
-      });
-      otherSetup();
-
+      displayMap();
     }
+
+    // get country code
+    jQuery.ajax( {
+      url: '//freegeoip.net/json/',
+      type: 'POST',
+      dataType: 'jsonp',
+      success: function(location) {
+        region = location.country_code;
+      }
+    });
   },
 
   autocompletePlaces = function() {
     autocompleteFrom.bindTo("bounds", map);
     autocompleteTo.bindTo("bounds", map);
+
     google.maps.event.addListener(autocompleteFrom, "place_changed", function() {
       $("#place1").attr("data-lat-long", autocompleteFrom.getPlace().geometry.location.lat() + " " + autocompleteFrom.getPlace().geometry.location.lng());
     });
@@ -123,41 +120,41 @@ $(function() {
       }
     }
     else {
-      directionsDisplay = new google.maps.DirectionsRenderer();
-      directionsDisplay.setMap(map);
       calcRoute();
     }
   },
 
   calcRoute = function() {
-    var selectedMode = document.getElementById('travelMode').value;
+    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
 
     if(TEST_MODE) {
       origin = "51.5154985 -0.17588420000004135";
       destination = "51.5263219 -0.08429820000003474";
     }
     else {
-      if(typeof $(input1).data("lat-long") === 'undefined') {
+      origin = $(input1).data("lat-long");
+      destination = $(input2).data("lat-long");
+      if(typeof origin === 'undefined') {
         origin = $(input1).val();
       }
-      else {
-        origin = $(input1).data("lat-long");
-      }
-      if(typeof $(input2).data("lat-long") === 'undefined') {
+      if(typeof destination === 'undefined') {
         destination = $(input2).val();
       }
-      else {
-        destination = $(input2).data("lat-long");
-      }
+      console.log(origin);
+      console.log(destination);
+      console.log(region);
     }
 
+    var selectedMode = document.getElementById('travelMode').value;
     var request = {
       origin: origin,
       destination: destination,
-      travelMode: google.maps.TravelMode[selectedMode]
+      travelMode: google.maps.TravelMode[selectedMode],
+      region: region
     };
     directionsService.route(request, function(result, status) {
-
+      console.log(result);
       $(".locations").addClass("showing-directions");
 
       if (status == google.maps.DirectionsStatus.OK) {
@@ -190,8 +187,8 @@ $(function() {
         computeTotalDistance(result);
       }
       else {
-        // console.log(status);
-        $('body').append('<div class="info-bar"><span>Sorry, no routes were found</span><button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
+        console.log('no routes:' + status);
+        $('.info-bar').show();
       }
     });
   },
@@ -250,7 +247,10 @@ $(function() {
         var place = results[i];
         createMarker(results[i], i);
       }
-      $('body').append(placesList).append('<div class="info-bar"><a href="#" class="show-places">Show <i class="non-mobile">as a list</i><i class="mobile">on a map</i></a> <button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
+      var showPlacesText = 'Show <i class="non-mobile">as a list</i><i class="mobile">on a map</i>',
+          hidePlacesText = '<i class="non-mobile">Hide list of places</i><i class="mobile">Show as a list</i>';
+
+      $('.info-bar .empty').replaceWith('<a href="#" class="show-places">' + showPlacesText + '</a>');
 
       $('.places-list li').on('click', function() {
         var ref = $(this).data('marker-id');
@@ -260,7 +260,7 @@ $(function() {
       $('.show-places').on('click', function() {
         $('.places-list').toggleClass('open');
         if($(this).text() == "Show as a liston a map") {
-          $(this).html('<i class="non-mobile">Hide list of places</i><i class="mobile">Show as a list</i>');
+          $(this).html(hidePlacesText);
           if($(window).innerWidth() < 500) {
             $('.places-list').hide();
             $('#map-canvas').show();
@@ -269,7 +269,7 @@ $(function() {
           }
         }
         else {
-          $(this).html('Show <i class="non-mobile">as a list</i><i class="mobile">on a map</i>');
+          $(this).html(showPlacesText);
           if($(window).innerWidth() < 500) {
             $('.places-list').show();
             $('#map-canvas').hide();
@@ -279,13 +279,10 @@ $(function() {
 
     }
     else {
-      // console.log(status)
-      $('body').append('<div class="info-bar"><span>Sorry, no places found to meet</span><button class="btn btn-small new-search">Search again</button><span class="logo">Let\'s meet in the middle</span></div>');
+      console.log('no places:' + status)
+      $('.info-bar').show();
     }
     $('body').addClass('searched');
-    $('.new-search').on('click', function() {
-      window.location.reload();
-    });
   },
 
   createMarker = function(place, index) {

@@ -12,8 +12,11 @@ html, body, #map-canvas
   margin: 0
   padding: 0
 
-.searched #map-canvas
-  display: none
+.searched
+  #map-canvas
+    display: none
+  .info-bar, .places-list
+    display: block
 
 ul, ol, li, p, h1, h2, h3, input
   margin: 0
@@ -93,12 +96,7 @@ a
       opacity: 0.5
 
 .twitter, .facebook
-  float: left
-  padding: 0.75em 0 0.75em 0.75em
-
-.facebook
-  iframe
-    height: 22px !important
+  display: none
 
 .locations
   background-color: rgba($navBar, 0.8)
@@ -153,6 +151,7 @@ a
 .places-list
   background-color: #26A65B
   color: #fff
+  display: none
   position: absolute
   left: 0
   top: 0
@@ -174,9 +173,11 @@ a
 .info-bar
   background-color: $navBar
   position: absolute
+  display: none
   left: 0
   top: 0
   width: 100%
+  z-index: 2
   span, a
     padding: 1em
     vertical-align: middle
@@ -204,6 +205,15 @@ a
   h1
     font-size: 1.8em
 
+  .twitter, .facebook
+    display: block
+    float: left
+    padding: 0.75em 0 0.75em 0.75em
+
+  .facebook
+    iframe
+      height: 22px !important
+
   .non-mobile
     display: inline
 
@@ -213,10 +223,11 @@ a
   .btn
     padding-bottom: 0.8em
 
-  .searched #map-canvas
-    height: 96%
-    top: 4%
-    display: block
+  .searched
+    #map-canvas
+      height: 96%
+      top: 4%
+      display: block
 
   body, input, button, select
     font-size: 16px
