@@ -126,7 +126,7 @@ p.error
   input
     width: 94%
   li
-    padding-bottom: 0.5em
+    padding-bottom: 0.75em
     width: 100%
     &.go
       margin-top: 0.5em
@@ -140,11 +140,6 @@ p.error
       .fake-label
         padding: 0 0.5em
 
-  .place
-    padding-bottom: 0.5em
-  // .select-wrap
-  //   display: block
-  //   // padding-bottom: 0.5em
   .share
     opacity: 0
     transition: 450ms opacity ease-in
@@ -180,6 +175,56 @@ p.error
       padding-top: 4em
     &:last-child
       border-bottom: 0
+
+.radios
+  overflow: hidden
+  margin-top: 0.5em
+  li
+    float: left
+    padding-bottom: 0
+    width: 23.5%
+    margin-right: 2%
+    text-align: center
+    &:last-child
+      margin-right: 0
+    label
+      display: inline-block
+      cursor: pointer
+      width: 100%
+      font-size: 11px
+      padding-top: 50px
+      padding-bottom: 1em
+    &.drive
+      label
+        background: rgba(#fff, 0.1) image-url("icon-car.png") no-repeat 50% 1em
+        background-size: 35px auto
+        &:hover
+          background-color: rgba(#fff, 0.2)
+    &.walk
+      label
+        background: rgba(#fff, 0.1) image-url("icon-walk.png") no-repeat 50% 1em
+        background-size: 35px auto
+        &:hover
+          background-color: rgba(#fff, 0.2)
+    &.transit
+      label
+        background: rgba(#fff, 0.1) image-url("icon-transit.png") no-repeat 50% 1em
+        background-size: 35px auto
+        &:hover
+          background-color: rgba(#fff, 0.2)
+    &.cycle
+      label
+        background: rgba(#fff, 0.1) image-url("icon-bike.png") no-repeat 50% 1em
+        background-size: 35px auto
+        &:hover
+          background-color: rgba(#fff, 0.2)
+
+  input[type=radio]:checked + label
+    background-color: $navBar !important
+
+  input[type=radio]
+    position: absolute
+    left: -999em
 
 .info-bar
   background-color: $navBar

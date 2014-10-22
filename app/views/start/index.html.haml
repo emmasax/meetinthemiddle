@@ -14,18 +14,32 @@
       %li
         %label{for: "place1"} Where are you?
         %input#place1{type: "text", name: "place-1", value: "", placeholder: "e.g. Broadway Street or NW1 0DU", required: "required" }
-      %li.place
+      %li
         %label{for: "place2"} Where are they?
         %input#place2{type: "text", name: "place-2", value: "", placeholder: "e.g. Folsom Street", required: "required" }
 
       %li
         %label{for: "travelMode"} How are you getting there?
-        .select-wrap
-          %select#travelMode
-            %option{value: "DRIVING"} Driving
-            %option{value: "WALKING"} Walking
-            %option{value: "TRANSIT"} Taking public transport
-            %option{value: "BICYCLING"} Cycling
+        %ul.radios
+          %li.drive
+            %input#drive{type: "radio", name: "travelMode", value: "DRIVING", checked: "checked" }
+            %label{for: "drive"} Driving
+          %li.walk
+            %input#walk{type: "radio", name: "travelMode", value: "WALKING" }
+            %label{for: "walk"} Walking
+          %li.transit
+            %input#transit{type: "radio", name: "travelMode", value: "TRANSIT" }
+            %label{for: "transit"} Public transport
+          %li.cycle
+            %input#cycle{type: "radio", name: "travelMode", value: "BICYCLING" }
+            %label{for: "cycle"} Cycling
+
+        / .select-wrap
+        /   %select#travelMode
+        /     %option{value: "DRIVING"} Driving
+        /     %option{value: "WALKING"} Walking
+        /     %option{value: "TRANSIT"} Taking public transport
+        /     %option{value: "BICYCLING"} Cycling
 
       %li.go
         %button.btn{type: "submit"} Find a meeting place

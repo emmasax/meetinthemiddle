@@ -1,6 +1,6 @@
 $(function() {
-  // var TEST_MODE = true;
-  var TEST_MODE = false;
+  var TEST_MODE = true;
+  // var TEST_MODE = false;
 
   var directionsDisplay,
       directionsService,
@@ -164,7 +164,7 @@ $(function() {
       console.log(region);
     }
 
-    var selectedMode = document.getElementById('travelMode').value;
+    var selectedMode = $('input[name=travelMode]:checked').val();
     var request = {
       origin: origin,
       destination: destination,
