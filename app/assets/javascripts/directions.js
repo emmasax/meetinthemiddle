@@ -1,6 +1,6 @@
 $(function() {
-  // var TEST_MODE = true;
-  var TEST_MODE = false;
+  var TEST_MODE = true;
+  // var TEST_MODE = false;
 
   var directionsDisplay,
       directionsService,
@@ -19,7 +19,6 @@ $(function() {
       infowindow,
       mapCentre,
       region,
-      smallScreen = (window.innerWidth || document.documentElement.clientWidth) < 500,
 
   initialize = function() {
     input1 = document.getElementById("place1"),
@@ -49,18 +48,28 @@ $(function() {
 
     autocompletePlaces();
 
-    // check if come from share link
-    // if(window.location.hash != null) {
-    //   formSetup = window.location.hash;
-    //   formSetupArray = formSetup.split('&');
-    //   place1 = formSetupArray[0].split('=')[1];
-    //   $('#place1').val(place1);
-    //   place2 = formSetupArray[1].split('=')[1];
-    //   $('#place2').val(place2);
-    //   mode = formSetupArray[2].split('=')[1];
-    //   type = formSetupArray[3].split('=')[1];
-    //   $('.locations').addClass('showing-directions');
-    // }
+    // check if user has got a share link
+    if(window.location.hash != '') {
+      formSetup = window.location.hash;
+      formSetupArray = formSetup.split('&');
+      if(formSetupArray.length == 3) {
+        optionOrigin = formSetupArray[0].split('=')[1];
+        $('#place1').val(optionOrigin);
+        optionDestination = formSetupArray[1].split('=')[1];
+        $('#place2').val(optionDestination);
+        optionTransit = formSetupArray[2].split('=')[1];
+        $('#travelMode').val(optionTransit);
+        if(optionOrigin != '' && optionDestination != '' && optionTransit != '') {
+          getDirections();
+        }
+        else {
+          $('.locations h1').after('<p class="error">Sorry, some routing information is missing.</p>');
+        }
+      }
+      else {
+        $('.locations h1').after('<p class="error">Sorry, some routing information is missing.</p>');
+      }
+    }
   },
 
   displayMap = function() {
@@ -199,6 +208,12 @@ $(function() {
         $('.info-bar').show();
       }
     });
+
+    $('.share').on('click', function() {
+      alert(document.URL + "/#p1=" + origin + "&p2=" + destination + "&mode=" + selectedMode);
+    });
+
+
   },
 
   computeTotalDistance = function(result) {
