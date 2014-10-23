@@ -1,6 +1,6 @@
 $(function() {
-  var TEST_MODE = true;
-  // var TEST_MODE = false;
+  // var TEST_MODE = true;
+  var TEST_MODE = false;
 
   var directionsDisplay,
       directionsService,
@@ -10,7 +10,6 @@ $(function() {
       marker,
       totalDist = 0,
       totalTime = 0,
-      currentZoom = 10,
       listener,
       placesList,
       markersList = [],
@@ -19,6 +18,7 @@ $(function() {
       infowindow,
       mapCentre,
       region,
+      currentZoom,
 
   initialize = function() {
     input1 = document.getElementById("place1"),
@@ -46,6 +46,7 @@ $(function() {
     });
 
     $('.new-search').on('click', function() {
+      window.location.hash = "";
       window.location.reload();
     });
 
@@ -77,7 +78,7 @@ $(function() {
 
   displayMap = function() {
     var mapOptions = {
-      zoom: currentZoom,
+      zoom: 10,
       center: mapCentre
     };
     map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
@@ -123,10 +124,16 @@ $(function() {
     autocompleteTo.bindTo("bounds", map);
 
     google.maps.event.addListener(autocompleteFrom, "place_changed", function() {
-      $("#place1").attr("data-lat-long", autocompleteFrom.getPlace().geometry.location.lat() + " " + autocompleteFrom.getPlace().geometry.location.lng());
+      var geometry = autocompleteFrom.getPlace().geometry;
+      if(!typeof geometry  === 'undefined') {
+        $("#place1").attr("data-lat-long", geometry.location.lat() + " " + geometry.location.lng());
+      }
     });
     google.maps.event.addListener(autocompleteTo, "place_changed", function() {
-      $("#place2").attr("data-lat-long", autocompleteTo.getPlace().geometry.location.lat() + " " + autocompleteTo.getPlace().geometry.location.lng());
+      var geometry = autocompleteTo.getPlace().geometry;
+      if(!typeof geometry  === 'undefined') {
+        $("#place2").attr("data-lat-long", geometry.location.lat() + " " + geometry.location.lng());
+      }
     });
   },
 
@@ -162,9 +169,9 @@ $(function() {
       if(typeof destination === 'undefined') {
         destination = $(input2).val();
       }
-      console.log(origin);
-      console.log(destination);
-      console.log(region);
+      // console.log(origin);
+      // console.log(destination);
+      // console.log(region);
     }
 
     var selectedMode = $('input[name=travelMode]:checked').val();
@@ -175,7 +182,7 @@ $(function() {
       region: region
     };
     directionsService.route(request, function(result, status) {
-      console.log(result);
+      // console.log(result);
       $(".locations").addClass("showing-directions");
 
       if (status == google.maps.DirectionsStatus.OK) {
@@ -207,7 +214,7 @@ $(function() {
         computeTotalDistance(result);
       }
       else {
-        console.log('no routes:' + status);
+        // console.log('no routes:' + status);
         $('.info-bar').show();
       }
     });
@@ -248,7 +255,13 @@ $(function() {
       marker.setPosition(polyline.GetPointAtDistance(distance));
       marker.setTitle("The middle");
     }
-    searchForMeetingPlace(marker);
+    // center mid point on the map
+    google.maps.event.addListener(map, 'idle', function() {
+      currentZoom = map.getZoom();
+      map.setCenter(marker.getPosition());
+      google.maps.event.clearListeners(map, 'idle');
+    });
+    searchForMeetingPlace(marker, totalDist);
   },
 
   createCustomMarker = function(latlng, label, html) {
@@ -263,13 +276,12 @@ $(function() {
     return marker;
   }
 
-  searchForMeetingPlace = function(midPoint) {
+  searchForMeetingPlace = function(midPoint, totalDist) {
     var request = {
       location: midPoint.getPosition(),
-      radius: '1000',
+      radius: 0.05 * totalDist,
       keyword: "coffee restaurant bar"
     };
-
     service = new google.maps.places.PlacesService(map);
     service.nearbySearch(request, showPlaces);
   },
@@ -298,7 +310,7 @@ $(function() {
             $('.places-list').hide();
             $('#map-canvas').show();
             map.setCenter(markersList[0].getPosition());
-            map.setZoom(15);
+            map.setZoom(map.getZoom() + 3);
           }
         }
         else {
@@ -312,8 +324,9 @@ $(function() {
 
     }
     else {
-      console.log('no places:' + status)
+      // console.log('no places:' + status)
       $('.info-bar').show();
+      $('.empty').text('Sorry, no places to meet');
     }
     $('body').addClass('searched');
   },
@@ -332,10 +345,11 @@ $(function() {
     google.maps.event.addListener(marker, 'click', function() {
       infowindow.setContent(place.name);
       infowindow.open(map, this);
-      if(map.getZoom() != 16) {
+      var newZoom = currentZoom + 3;
+      if(map.getZoom() != newZoom) {
         map.setCenter(marker.getPosition());
       }
-      map.setZoom(16);
+      map.setZoom(newZoom);
     });
   };
 
@@ -344,7 +358,7 @@ $(function() {
   }
 
   // always prevent form submit
-  $('form').on("submit", function(ev) {
+  $('body:not(.map-loaded) form').on("submit", function(ev) {
     ev.preventDefault();
   });
 
