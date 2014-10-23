@@ -277,9 +277,11 @@ $(function() {
   }
 
   searchForMeetingPlace = function(midPoint, totalDist) {
+    var radius = ((0.05 * totalDist) < 1000) ? 1000 : 0.05 * totalDist;
+    // console.log(radius);
     var request = {
       location: midPoint.getPosition(),
-      radius: 0.05 * totalDist,
+      radius: radius,
       keyword: "coffee restaurant bar"
     };
     service = new google.maps.places.PlacesService(map);
