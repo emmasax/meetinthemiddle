@@ -42,6 +42,7 @@ $(function() {
 
     $('form').on("submit", function(ev) {
       ev.preventDefault();
+      ga('send', 'event', 'form', 'submitted');
       getDirections();
     });
 
@@ -222,13 +223,14 @@ $(function() {
     var hash = "#p1=" + origin + "&p2=" + destination + "&mode=" + selectedMode,
         linkToCopy = $('.share-link textarea');
     window.location.hash = hash;
+    ga('set', 'location', hash);
     linkToCopy.text(document.URL);
 
     $('.share').on('click', function(ev) {
       ev.preventDefault();
+      ga('send', 'event', 'button', 'clicked', 'get share link');
       $('.share-link').toggleClass('open');
       linkToCopy.focus().select();
-
     });
 
   },
@@ -290,6 +292,8 @@ $(function() {
 
   showPlaces = function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
+      ga('send', 'event', 'places', 'displayed', 'places shown');
+
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
         createMarker(results[i], i);
@@ -305,6 +309,8 @@ $(function() {
       });
 
       $('.show-places').on('click', function() {
+        ga('send', 'event', 'button', 'clicked', 'show places list');
+
         $('.places-list').toggleClass('open');
         if($(this).text() == "Show as a liston a map") {
           $(this).html(hidePlacesText);

@@ -9,12 +9,16 @@
     %textarea{readonly: "readonly"}
 
 .locations
+  .loading
+    %span#bubblingG_1
+    %span#bubblingG_2
+    %span#bubblingG_3
+  %h1 Let's meet in the middle
+  %p
+    Quickly and easily find a place to meet half-way between two locations.
+    Meeting a friend after work for a beer, or a client for a coffee.
+    Enter your location, their location and the method of transport and see places you could meet!
   %form{novalidate: "novalidate"}
-    %h1 Let's meet in the middle
-    .loading
-      %span#bubblingG_1
-      %span#bubblingG_2
-      %span#bubblingG_3
     %ul.standard
       %li
         %label{for: "place1"} Where are you?
