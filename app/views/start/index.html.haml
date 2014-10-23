@@ -1,15 +1,20 @@
 #map-canvas
 
-/ empty state
 .info-bar
   %span.empty Sorry, no routes were found
   =link_to "Get link to share", "#", class: "share"
   %button.btn.new-search Search again
   %span.logo Let's meet in the middle
+  .share-link
+    %textarea{readonly: "readonly"}
 
 .locations
   %form{novalidate: "novalidate"}
     %h1 Let's meet in the middle
+    .loading
+      %span#bubblingG_1
+      %span#bubblingG_2
+      %span#bubblingG_3
     %ul.standard
       %li
         %label{for: "place1"} Where are you?
@@ -33,13 +38,6 @@
           %li.cycle
             %input#cycle{type: "radio", name: "travelMode", value: "BICYCLING" }
             %label{for: "cycle"} Cycling
-
-        / .select-wrap
-        /   %select#travelMode
-        /     %option{value: "DRIVING"} Driving
-        /     %option{value: "WALKING"} Walking
-        /     %option{value: "TRANSIT"} Taking public transport
-        /     %option{value: "BICYCLING"} Cycling
 
       %li.go
         %button.btn{type: "submit"} Find a meeting place

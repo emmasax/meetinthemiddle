@@ -1,0 +1,39 @@
+.loading
+  text-align: center
+  width: 100px
+  height: 63px
+  position: absolute
+  left: 50%
+  margin-left: -50px
+  top: 50%
+  margin-top: -32px
+  span
+    display: inline-block
+    vertical-align: middle
+    width: 13px
+    height: 13px
+    margin: 31px auto
+    background: #2C3E50
+    border-radius: 63px
+    animation: loading 1.3s infinite alternate
+
+#bubblingG_1
+  animation-delay: 0s
+
+#bubblingG_2
+  animation-delay: 0.39s
+
+#bubblingG_3
+  animation-delay: 0.78s
+
+@keyframes loading
+  0%
+    width: 13px
+    height: 13px
+    background-color: #2C3E50
+    transform: translateY(0)
+  100%
+    width: 30px
+    height: 30px
+    background-color: #FFFFFF
+    transform: translateY(-26px)

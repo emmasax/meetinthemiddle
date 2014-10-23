@@ -1,6 +1,6 @@
 $(function() {
-  // var TEST_MODE = true;
-  var TEST_MODE = false;
+  var TEST_MODE = true;
+  // var TEST_MODE = false;
 
   var directionsDisplay,
       directionsService,
@@ -33,6 +33,9 @@ $(function() {
   },
 
   otherSetup = function() {
+    // map loaded
+    $('body').addClass('map-loaded');
+
     $('.edit').on('click', function() {
       $('.locations').addClass('open');
     });
@@ -209,10 +212,17 @@ $(function() {
       }
     });
 
-    $('.share').on('click', function() {
-      alert(document.URL + "/#p1=" + origin + "&p2=" + destination + "&mode=" + selectedMode);
-    });
+    var hash = "#p1=" + origin + "&p2=" + destination + "&mode=" + selectedMode,
+        linkToCopy = $('.share-link textarea');
+    window.location.hash = hash;
+    linkToCopy.text(document.URL);
 
+    $('.share').on('click', function(ev) {
+      ev.preventDefault();
+      $('.share-link').toggleClass('open');
+      linkToCopy.focus().select();
+
+    });
 
   },
 
@@ -332,5 +342,10 @@ $(function() {
   if($('body.map').length > 0) {
     google.maps.event.addDomListener(window, "load", initialize);
   }
+
+  // always prevent form submit
+  $('form').on("submit", function(ev) {
+    ev.preventDefault();
+  });
 
 });

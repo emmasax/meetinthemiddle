@@ -25,14 +25,13 @@
         :plain
           <a href="https://twitter.com/share" class="twitter-share-button" data-text="This is pretty useful! Find a place to meet mid-route between two locations" data-via="emmasax">Tweet</a>
           <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-
       .facebook
         :plain
           <iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fmeet-me-in-the-middle.herokuapp.com&amp;layout=button_count&amp;show_faces=true&amp;action=like&amp;colorscheme=light&amp" style="overflow:hidden;width:100%;height:80px;" scrolling="no" frameborder="0" allowTransparency="true"><a href="http://www.trivoo.net" class="fbook">trivoo.net</a></iframe>
 
       =link_to "What's new", new_path
 
-      &copy;2014
+      %p &copy;2014
       / =link_to "Follow emmasax on Twitter", "http://twitter.com/emmasax"
 
     = javascript_include_tag "application"
