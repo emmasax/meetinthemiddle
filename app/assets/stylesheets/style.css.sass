@@ -29,7 +29,7 @@ h1
   a
     text-decoration: none
 
-input
+input, textarea
   border: 0
   box-sizing: border-box
   border-radius: 0
@@ -288,7 +288,8 @@ footer
     text-decoration: none
     &:hover
       background-color: rgba(#fff, 0.1)
-
+  .share-link
+    display: none
   .share
     background: image-url("icon-share.png") no-repeat 1em 50%
     background-size: 20px auto
@@ -310,16 +311,21 @@ footer
       position: absolute
       right: 0
       top: 0
-    h1 a
-      padding: 0.35em 1em
-      &:hover
-        background-color: transparent
+    h1
+      text-align: left
+      a
+        position: static
+        padding: 0.85em 1em
+        &:hover
+          background-color: transparent
 
   .features
     max-width: 600px
     margin: 0 auto
     & > li
       margin-bottom: 3em
+      padding-left: 1em
+      padding-right: 1em
       li
         list-style-type: disc
         margin-left: 1.5em
@@ -376,6 +382,7 @@ footer
       padding-bottom: 0.4em
     .share-link
       position: absolute
+      display: block
       background-color: $navBar
       padding: 1em
       width: 25em
@@ -401,6 +408,14 @@ footer
     transition: 250ms left ease-in
     &.open
       left: 0
+
+  .feature-list
+    .info-bar
+      h1
+        text-align: center
+        a
+          padding: 0.35em 1em
+
 
 @media all and (min-width: 600px)
   .twitter, .facebook
