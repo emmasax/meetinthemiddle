@@ -120,8 +120,6 @@ footer
   max-width: 450px
   overflow: hidden
   padding: 1.5em 1.25em
-  -webkit-transform: translate(-50%, -50%)
-  -moz-transform: translate(-50%, -50%)
   transform: translate(-50%, -50%)
   z-index: 1
   width: 80%
@@ -142,10 +140,9 @@ footer
     width: 100%
     padding-left: 2em
   li
-    padding-bottom: 1.5em
+    padding-bottom: 1em
     width: 100%
     &.go
-      margin-top: 0.5em
       padding-bottom: 0
       text-align: right
     &.no-label
@@ -355,10 +352,13 @@ footer
     h1
       line-height: 43px
     li
+      padding-bottom: 1.5em
       &.go
         padding: 0
 
   .radios
+    li
+      padding-bottom: 0
     label
       min-height: 0
 
