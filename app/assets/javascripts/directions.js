@@ -27,7 +27,7 @@ $(function() {
     directionsService = new google.maps.DirectionsService(),
     autocompleteFrom = new google.maps.places.Autocomplete(input1),
     autocompleteTo = new google.maps.places.Autocomplete(input2),
-    infowindow = new google.maps.InfoWindow(),
+    infowindow = new google.maps.InfoWindow({maxWidth: 200}),
     mapCentre = new google.maps.LatLng(51.5072, 0.1275);
     getUserLocation();
   },
@@ -42,7 +42,9 @@ $(function() {
 
     $('form').on("submit", function(ev) {
       ev.preventDefault();
-      ga('send', 'event', 'form', 'submitted');
+      if(!(typeof ga === "undefined")) {
+        ga('send', 'event', 'form', 'submitted');
+      }
       getDirections();
     });
 
@@ -126,13 +128,13 @@ $(function() {
 
     google.maps.event.addListener(autocompleteFrom, "place_changed", function() {
       var geometry = autocompleteFrom.getPlace().geometry;
-      if(!typeof geometry  === 'undefined') {
+      if(!(typeof geometry  === 'undefined')) {
         $("#place1").attr("data-lat-long", geometry.location.lat() + " " + geometry.location.lng());
       }
     });
     google.maps.event.addListener(autocompleteTo, "place_changed", function() {
       var geometry = autocompleteTo.getPlace().geometry;
-      if(!typeof geometry  === 'undefined') {
+      if(!(typeof geometry  === 'undefined')) {
         $("#place2").attr("data-lat-long", geometry.location.lat() + " " + geometry.location.lng());
       }
     });
@@ -223,12 +225,16 @@ $(function() {
     var hash = "#p1=" + origin + "&p2=" + destination + "&mode=" + selectedMode,
         linkToCopy = $('.share-link textarea');
     window.location.hash = hash;
-    ga('set', 'location', hash);
+    if(!(typeof ga === "undefined")) {
+      ga('set', 'location', hash);
+    }
     linkToCopy.text(document.URL);
 
     $('.share').on('click', function(ev) {
       ev.preventDefault();
-      ga('send', 'event', 'button', 'clicked', 'get share link');
+      if(!(typeof ga === "undefined")) {
+        ga('send', 'event', 'button', 'clicked', 'get share link');
+      }
       $('.share-link').toggleClass('open');
       linkToCopy.focus().select();
     });
@@ -251,11 +257,10 @@ $(function() {
     var distance = (percentage/100) * totalDist;
     var time = ((percentage/100) * totalTime/60).toFixed(2);
     if (!marker) {
-      marker = createCustomMarker(polyline.GetPointAtDistance(distance), "", "");
+      marker = createCustomMarker(polyline.GetPointAtDistance(distance), "", "<br/>Approximately " + time + " minutes to this point");
     }
     else {
       marker.setPosition(polyline.GetPointAtDistance(distance));
-      marker.setTitle("The middle");
     }
     // center mid point on the map
     google.maps.event.addListener(map, 'idle', function() {
@@ -275,6 +280,18 @@ $(function() {
       icon: "http://maps.google.com/mapfiles/marker_orange.png"
     });
     marker.myname = label;
+
+    google.maps.event.addListener(marker, 'click', function() {
+      console.log(marker);
+      infowindow.setContent("<b>The middle</b> " + html);
+      infowindow.open(map, this);
+      var newZoom = currentZoom + 3;
+      if(map.getZoom() != newZoom) {
+        map.setCenter(marker.getPosition());
+      }
+      map.setZoom(newZoom);
+    });
+
     return marker;
   }
 
@@ -292,7 +309,9 @@ $(function() {
 
   showPlaces = function(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
-      ga('send', 'event', 'places', 'displayed', 'places shown');
+      if(!(typeof ga === "undefined")) {
+        ga('send', 'event', 'places', 'displayed', document.URL);
+      }
 
       for (var i = 0; i < results.length; i++) {
         var place = results[i];
@@ -309,7 +328,9 @@ $(function() {
       });
 
       $('.show-places').on('click', function() {
-        ga('send', 'event', 'button', 'clicked', 'show places list');
+        if(!(typeof ga === "undefined")) {
+          ga('send', 'event', 'button', 'clicked', 'show places list');
+        }
 
         $('.places-list').toggleClass('open');
         if($(this).text() == "Show as a liston a map") {
@@ -351,13 +372,28 @@ $(function() {
     markersList[index] = marker;
 
     google.maps.event.addListener(marker, 'click', function() {
-      infowindow.setContent(place.name);
-      infowindow.open(map, this);
-      var newZoom = currentZoom + 3;
-      if(map.getZoom() != newZoom) {
-        map.setCenter(marker.getPosition());
-      }
-      map.setZoom(newZoom);
+      // look up some more info about that marker
+      var request = {
+        placeId: place.place_id
+      };
+      marker = this;
+      service1 = new google.maps.places.PlacesService(map);
+      service1.getDetails(request, function(place, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          var photo = "";
+          if(!(typeof place.photos === "undefined")) {
+            photo = "<img src=" + place.photos[0].getUrl({maxWidth: 200, maxHeight: 150}) + " width='150' height='150' />"
+          }
+          infowindow.setContent(photo+"<p><b>" + place.name + "</b></p><p>" + place.formatted_address + "</p><p>" + place.formatted_phone_number + "</p><p><a href='" + place.website + "' target='_blank'>Visit website</a></p>");
+          infowindow.open(map, marker);
+          var newZoom = currentZoom + 3;
+          if(map.getZoom() != newZoom) {
+            map.setCenter(marker.getPosition());
+          }
+          map.setZoom(newZoom);
+        }
+      });
+
     });
   };
 
