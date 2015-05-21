@@ -1,0 +1,159 @@
+#map
+
+= @travel_profile.inspect
+
+- content_for :javascript do
+  :javascript
+    handler = Gmaps.build('Google');
+    var mapCentre;
+
+    var initialize = function() {
+      mapCentre = new google.maps.LatLng(51.5072, 0.1275);
+      getUserLocation();
+    },
+
+    getUserLocation = function() {
+      // display the map if there is an error or geolocation not supported - just use default lat lng
+      var success = function(position) {
+        mapCentre = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        displayMap();
+      },
+      error = function(msg) {
+        displayMap();
+      };
+
+      if(navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(success, error);
+      }
+      else {
+        // error('not supported');
+        displayMap();
+      }
+
+      // get country code
+      jQuery.ajax( {
+        url: '//freegeoip.net/json/',
+        type: 'POST',
+        dataType: 'jsonp',
+        success: function(location) {
+          region = location.country_code;
+        }
+      });
+    },
+
+    // TODO: rewrite this function to use data from object
+    calcRoute = function() {
+      directionsDisplay = new google.maps.DirectionsRenderer();
+      directionsDisplay.setMap(map);
+
+      if(TEST_MODE) {
+        origin = "51.5154985 -0.17588420000004135";
+        destination = "51.5263219 -0.08429820000003474";
+      }
+      else {
+        origin = $(input1).data("lat-long");
+        destination = $(input2).data("lat-long");
+        if(typeof origin === 'undefined') {
+          origin = $(input1).val();
+        }
+        if(typeof destination === 'undefined') {
+          destination = $(input2).val();
+        }
+        // console.log(origin);
+        // console.log(destination);
+        // console.log(region);
+      }
+
+      var selectedMode = $('#travelMode input:checked').val();
+      var request = {
+        origin: origin,
+        destination: destination,
+        travelMode: google.maps.TravelMode[selectedMode],
+        region: region
+      };
+      directionsService.route(request, function(result, status) {
+        // console.log(result);
+        $(".locations").addClass("showing-directions");
+
+        if (status == google.maps.DirectionsStatus.OK) {
+          polyline.setPath([]);
+          directionsDisplay.setDirections(result);
+
+          startLocation = new Object();
+          endLocation = new Object();
+          var bounds = new google.maps.LatLngBounds();
+          var path = result.routes[0].overview_path;
+          var legs = result.routes[0].legs;
+          for (i=0;i < legs.length;i++) {
+            if (i == 0) {
+              startLocation.latlng = legs[i].start_location;
+              startLocation.address = legs[i].start_address;
+            }
+            endLocation.latlng = legs[i].end_location;
+            endLocation.address = legs[i].end_address;
+            var steps = legs[i].steps;
+            for (j=0;j < steps.length;j++) {
+              var nextSegment = steps[j].path;
+              for (k=0;k < nextSegment.length;k++) {
+                polyline.getPath().push(nextSegment[k]);
+                bounds.extend(nextSegment[k]);
+              }
+            }
+          }
+          polyline.setMap(map);
+          computeTotalDistance(result);
+        }
+        else {
+          // console.log('no routes:' + status);
+          $('.info-bar').show();
+        }
+      });
+
+      var hash = "#p1=" + origin + "&p2=" + destination + "&mode=" + selectedMode,
+          linkToCopy = $('.share-link textarea');
+      window.location.hash = hash;
+      if(!(typeof ga === "undefined")) {
+        ga('set', 'location', hash);
+      }
+      linkToCopy.text(document.URL);
+
+      $('.share').on('click', function(ev) {
+        ev.preventDefault();
+        if(!(typeof ga === "undefined")) {
+          ga('send', 'event', 'button', 'clicked', 'get share link');
+        }
+        $('.share-link').toggleClass('open');
+        linkToCopy.focus().select();
+      });
+
+    },
+
+    displayMap = function() {
+
+      var mapOptions = {
+        zoom: 10,
+        center: mapCentre
+      };
+
+      // polyline = new google.maps.Polyline({
+      //   path: [],
+      //   strokeColor: '#FF0000',
+      //   strokeWeight: 3
+      // });
+      // otherSetup();
+
+      handler.buildMap({
+        provider: { setZoom: 10 },
+        internal: {id: 'map'}
+      },
+      function() {
+        handler.map.centerOn(mapCentre)
+      });
+
+      calcRoute();
+
+    };
+
+    if($('body.map').length > 0) {
+      google.maps.event.addDomListener(window, "load", initialize);
+    }

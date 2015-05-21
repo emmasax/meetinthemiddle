@@ -7,7 +7,7 @@ body, input, button, select
   font-size: 14px
   color: $textColor
 
-html, body, #map-canvas
+html, body, #map-canvas, #map
   height: 100%
   margin: 0
   padding: 0
@@ -117,7 +117,7 @@ footer
   position: absolute
   top: 50%
   left: 50%
-  max-width: 450px
+  max-width: 520px
   overflow: hidden
   padding: 1.5em 1.25em
   transform: translate(-50%, -55%)
@@ -330,7 +330,7 @@ footer
         list-style-type: disc
         margin-left: 1.5em
 
-@media all and (min-width: 550px)
+@media all and (min-width: 650px)
   h1
     font-size: 1.7em
 
@@ -341,7 +341,7 @@ footer
     display: none
 
   .searched
-    #map-canvas
+    #map-canvas, #map
       height: 96%
       top: 4%
       display: block

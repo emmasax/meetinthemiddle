@@ -1,0 +1,45 @@
+#map-canvas
+
+.locations
+  .loading
+    %p Page not loading? You may be prompted to allow us to use your location (at the top of the page), if you deny you will still be able to use the app although it may not work as expected.
+    .bubbling
+      %span#bubblingG_1
+      %span#bubblingG_2
+      %span#bubblingG_3
+
+  %h1 Shall we meet in the middle?
+
+  %p
+    Quickly and easily find a place to meet half-way between two locations.
+    Got a date, meeting a friend after work for a beer, or a client for a coffee.
+    Enter your location, their location and the method of transport and see places you could meet!
+
+  = form_for @travel_profile, html: { novalidate: "novalidate" } do |f|
+    %ul.standard
+      %li
+        = f.label :person_1_start, "Where are you?"
+        = f.text_field :person_1_start, placeholder: "e.g. Broadway Street or NW1 0DU", required: "required"
+
+      %li
+        = f.label :person_2_start, "Where are they?"
+        = f.text_field :person_2_start, placeholder: "e.g. Folsom Street", required: "required"
+
+      %li#travelMode
+        = f.label :travel_mode_driving, "How are you getting there?"
+        %ul.radios
+          %li.drive
+            = f.radio_button :travel_mode, "DRIVING", checked: "checked"
+            = f.label :travel_mode_driving, "Driving"
+          %li.walk
+            = f.radio_button :travel_mode, "WALKING"
+            = f.label :travel_mode_driving, "Walking"
+          %li.transit
+            = f.radio_button :travel_mode, "TRANSIT"
+            = f.label :travel_mode_driving, "Public transport"
+          %li.cycle
+            = f.radio_button :travel_mode, "BICYCLING"
+            = f.label :travel_mode_driving, "Cycling"
+
+      %li.go
+        %button.btn{type: "submit"} Find a meeting place
