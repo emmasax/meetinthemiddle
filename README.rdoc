@@ -10,6 +10,11 @@ Google Maps for Rails
 
 https://github.com/apneadiving/Google-Maps-for-Rails
 
+
+Article about Google Maps integration
+
+https://binarapps.com/blog/integration-of-googlemaps-in-rails-4/
+
 == TODO
 
 Rewrite calcRoute to use the object data
