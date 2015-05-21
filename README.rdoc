@@ -5,6 +5,11 @@ Google Directions
 
 https://github.com/joshcrews/google-directions-ruby
 
+
+Google Maps for Rails
+
+https://github.com/apneadiving/Google-Maps-for-Rails
+
 == TODO
 
 Rewrite calcRoute to use the object data
